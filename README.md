@@ -17,10 +17,10 @@ Refer to https://www.mysql.com/ for specifics regarding MySQL installation on yo
 
 One last important note is that for the purposes of database security, the "Credentials.txt" file used in the DBConnector class is not included in this repository. If you want to run this project, create a file with the same name at the top level folder of the project and have its content exactly as follows:
 
-jdbc:mysql://YOUR EXACT MYSQL/DATABASE URL (e.g localhost/finvision)
-YOUR USERNAME FOR ABOVE DATABASE
-YOUR PASSWORD FOR ABOVE DATABASE 
+jdbc:mysql://YOUR EXACT MYSQL/DATABASE URL (e.g localhost/finvision) '\n'
+YOUR USERNAME FOR ABOVE DATABASE '\n'
+YOUR PASSWORD FOR ABOVE DATABASE  
 
-*Database Schema yet to be finalized, will be included at a future date
+*Take note of the '\n' characters and translate accordingly for the Credentials file. Database Schema yet to be finalized, will be included at a future date
 
 
