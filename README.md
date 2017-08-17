@@ -21,6 +21,6 @@ jdbc:mysql://YOUR EXACT MYSQL/DATABASE URL (e.g localhost/finvision) '\n'
 YOUR USERNAME FOR ABOVE DATABASE '\n'
 YOUR PASSWORD FOR ABOVE DATABASE  
 
-*Take note of the '\n' characters and translate accordingly for the Credentials file. Database Schema yet to be finalized, will be included at a future date
+*Take note of the newline characters and translate accordingly for the Credentials file (there should be 3 lines total in the file). Database Schema yet to be finalized, will be included at a future date
 
 
