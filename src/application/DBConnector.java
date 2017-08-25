@@ -1,4 +1,8 @@
 package application;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 
 
@@ -11,9 +15,9 @@ public class DBConnector {
 	//Reference to self
 	private static DBConnector instance= new DBConnector(); 
 	public static final String driver= "com.mysql.jdbc.Driver";
-	public static final String url = "jdbc:mysql://localhost/finvision";  
-	public static final String user = "root";
-	public static final String pass = "Franklinpark1!";  
+	public static String url = null;  
+	public static String user = null;
+	public static String pass = null;  
 	  
 	   //constructor
 	   private DBConnector(){  
@@ -28,6 +32,27 @@ public class DBConnector {
 	   //Establish MySQL connection
 	   private Connection createConnection(){
 		   Connection connection=null;
+		   try {
+			BufferedReader br=new BufferedReader(new FileReader("Credentials.txt"));
+			try {
+				url=br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				user=br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				pass=br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		   try{
 			   System.out.println("connecting");
 			   connection=DriverManager.getConnection(url, user, pass);
