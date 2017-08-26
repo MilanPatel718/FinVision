@@ -54,7 +54,6 @@ public class DBConnector {
 			e1.printStackTrace();
 		}
 		   try{
-			   System.out.println("connecting");
 			   connection=DriverManager.getConnection(url, user, pass);
 		   }
 		   catch (SQLException e){

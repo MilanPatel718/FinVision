@@ -34,10 +34,10 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.5" mouseTransparent="true" prefHeight="398.0" prefWidth="460.0" VBox.vgrow="ALWAYS">
+      <SplitPane fx:id="Split" dividerPositions="0.5" prefHeight="398.0" prefWidth="460.0" VBox.vgrow="ALWAYS">
         <items>
-            <ListView fx:id="PortfolioList" prefHeight="200.0" prefWidth="200.0" styleClass="background" />
-            <GridPane>
+            <ListView fx:id="PortfolioList" prefHeight="200.0" prefWidth="200.0" />
+            <GridPane fx:id="Grid">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
