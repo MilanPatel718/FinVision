@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="editBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ListView fx:id="stockList" prefHeight="400.0" prefWidth="169.0" />
+      <VBox prefHeight="400.0" prefWidth="431.0">
+         <children>
+            <TextArea editable="false" prefHeight="174.0" prefWidth="357.0" text="Delete: Double click any stock on the left to delete it. &#10;&#10;Add: Fill out the Ticker and Stock Name fields below and click add to add a stock to the current portfolio&#10;&#10;Rename: Fill out the Portfolio Name field below and click rename to change the portfolio name&#10;" wrapText="true" />
+            <Pane prefHeight="227.0" prefWidth="357.0">
+               <children>
+                  <TextField fx:id="editTicker" layoutX="14.0" layoutY="14.0" promptText="Ticker" />
+                  <TextField fx:id="editStock" layoutX="14.0" layoutY="56.0" promptText="Stock Name" />
+                  <Button fx:id="stockAdd" layoutX="14.0" layoutY="98.0" mnemonicParsing="false" onAction="#addStock" text="Add" />
+                  <TextField fx:id="editName" layoutX="14.0" layoutY="143.0" promptText="Portfolio Name" />
+                  <Button fx:id="Rename" layoutX="14.0" layoutY="182.0" mnemonicParsing="false" onAction="#renamePortfolio" text="Rename" />
+                  <Button fx:id="FinishEdit" layoutX="294.0" layoutY="166.0" mnemonicParsing="false" onAction="#finishEdit" prefHeight="47.0" prefWidth="123.0" text="Finish" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</HBox>

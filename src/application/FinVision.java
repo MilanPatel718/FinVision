@@ -6,8 +6,6 @@ import javafx.stage.Stage;
 import view.HomeController;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -25,6 +23,7 @@ public class FinVision extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException, SQLException {
+		//Load fxml file and prepare for application launch
 		FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
 		loader.setController(new HomeController() );
 		VBox root= (VBox)loader.load();
@@ -32,7 +31,7 @@ public class FinVision extends Application {
 		setPrimaryStage(primaryStage);
 		primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
 
-		
+		//Set preferred dimensions for application home
 		homeController.start(primaryStage);
 		Scene scene=new Scene(root, 800, 600);
 		primaryStage.setMinHeight(700);
@@ -46,6 +45,7 @@ public class FinVision extends Application {
 		launch(args);
 	}
 	
+	 //Getter and Setters for the primary stage of the application
 	 public static Stage getPrimaryStage() {
 	        return pStage;
 	    }

@@ -8,18 +8,18 @@
 
 <HBox fx:id="container" maxHeight="271.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="PName" prefHeight="39.0" prefWidth="68.0" text="Label" />
+      <Label fx:id="PName" prefHeight="39.0" prefWidth="113.0" text="Label" />
       <CheckBox fx:id="Select" mnemonicParsing="false" prefHeight="38.0" prefWidth="93.0" text="Select">
          <HBox.margin>
             <Insets left="20.0" />
          </HBox.margin></CheckBox>
-      <Button fx:id="Edit" mnemonicParsing="false" prefHeight="40.0" prefWidth="65.0" text="Edit">
+      <Button fx:id="Edit" mnemonicParsing="false" onAction="#editPortfolio" prefHeight="40.0" prefWidth="65.0" text="Edit">
          <HBox.margin>
             <Insets left="35.0" />
          </HBox.margin></Button>
       <Button fx:id="Delete" mnemonicParsing="false" onAction="#deletePortfolio" prefHeight="40.0" prefWidth="65.0" text="Delete">
          <HBox.margin>
-            <Insets left="40.0" />
+            <Insets left="10.0" />
          </HBox.margin></Button>
    </children>
 </HBox>
