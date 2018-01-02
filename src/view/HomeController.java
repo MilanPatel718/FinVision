@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.Date;
 
 import application.DBOperations;
 import application.FinVision;
@@ -208,7 +209,7 @@ public class HomeController {
 			
 			//Connect to database
 			DBOperations Ops=new DBOperations();
-			stockNames=Ops.retrieveStocks(editPortfolio);
+			stockNames=Ops.retrieveStocks(editPortfolio, false);
 			
 			//Create ListView for list of stock names
 			ObservableList<String> Stocknames =FXCollections.observableArrayList(stockNames);
@@ -474,87 +475,103 @@ public class HomeController {
 			alert.showAndWait();
 			
 		}
+		else if(PortfolioList.getSelectionModel().getSelectedItems().size()>2){
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Error");
+			alert.setContentText("Only select 2 portfolios to compare");
+			alert.showAndWait();
+			
+		}
 		else{
 			 ObservableList<String> selectedItems =  PortfolioList.getSelectionModel().getSelectedItems();
+			 Rengine re = Rengine.getMainEngine();
+			 if (re==null){
+				re = new Rengine(null, false, null);
+			 }
+				
+			 // Recommended, though not needed as such.
+			 if (!Rengine.versionCheck()) {System.exit(0);}
+			 
+			 
+			 //If user selects 1 portfolio, display plots 2x2
+			 if(selectedItems.size()==1){
+				 List<String> stockNames=new ArrayList<String>();
+					
+				 //Connect to database
+				 DBOperations Ops=new DBOperations();
+				 stockNames=Ops.retrieveStocks(selectedItems.get(0), true);
+				 
+				 int Size= stockNames.size() + 1;
+
+				 
+				 String combinePlot = "";
+				 String vector = "c(";
+				 for(int i=0; i<stockNames.size(); i++){
+					 String ticker=stockNames.get(i).toString();
+					 if(i==stockNames.size()-1){
+						 vector = vector + "\"" + ticker + "\")";
+						 combinePlot= combinePlot+ ticker +"="+ ticker+"[, \""+ ticker+".Close\"]";
+					 }
+						 
+					 else{
+						 vector = vector + "\"" + ticker + "\", ";
+						 combinePlot= combinePlot+ ticker +"= "+ ticker+"[, \""+ ticker+".Close\"], ";
+					 }
+					 
+
+				 	}
+
+				 REXP rLink;
+				 rLink = re.eval("source(\"FinVision.R\")");
+				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + ")");
+
+				 
+				 /* re.eval("stocks <- as.xts(data.frame(" + combinePlot + "))");
+				 System.out.println("stocks <- as.xts(data.frame(" + combinePlot + "))");
+				 re.eval("stock_return = apply(stocks, 1, function(x) { x / stocks[1,]})"
+						+ "%>% t %>% as.xts");
+				 re.eval("plot(as.zoo(stock_return), screens=1, lty = 1:3, "
+						+ "xlab = \"Date\", ylab = \"Return\")");
+				 re.eval("legend(\"topleft\", " + vector +", lty = 1:3, cex=0.5"); */
+				
+				 
+				 	
+				 	
+			 
+			 }
+			
+			 //If user selects 2 portfolios
+			 else{
 			 for(int i=0; i<selectedItems.size(); i++){
 				 String Portfolio=selectedItems.get(i);
 				 List<String> stockNames=new ArrayList<String>();
 					
 				 //Connect to database
 				 DBOperations Ops=new DBOperations();
-				 stockNames=Ops.retrieveStocks(Portfolio);
-			    
-	
-				Rengine re=new Rengine(null, false, null);
-				
-				// Recommended, though not needed as such.
-				if (!Rengine.versionCheck()) {System.exit(0);}
-					
-				// This just reports whether R was running and we connected to it, or whether we started it.
-				if (re.isStandAlone()) System.out.println("R initialised by java");
-					
-				// We're going to use R to read the file but we'll get all the data back out from it 
-				// into java, including the predicted points from our linear regression.
-					
-				// Original data.
-				double[] x1 = null;
-				double[] y1 = null;
-				// Prediction data.
-				double[] x2 = null;
-				double[] y2 = null;
-					
-					
-				try {
-				// The easiest way to deal with R is to use the Rengine eval method. This takes in standard R commands as Strings.
-				// Note in the file string that the original text, which needed escaping, is now within a larger String, meaning all the 
-				// escape characters need escaping themselves. Easier to use forward-slashes, but I've used back-slashes here to show the point.
-				REXP a = re.eval("data1 <- read.csv(\"C://Users/milan/Desktop/data.tab.txt\", header = TRUE)");
-						
-				// The eval method returns a very useful object of REXP class. This can be converted to 
-				// various things to extract data. Here were just convert it to a String, more than anything so you can see it working.
-				System.out.println("1: " + a.toString());
-						
-				a = re.eval("attach(data1)");
-						
-				// The problem with toString is that it can give you a whole complicated object.
-				// The nice thing about the following command is that, while it doesn't have any output in R, in 
-				// rJava it sets up the REXP with a copy of the data asked for. 
-				a = re.eval("data1$Age");
-				
-				// We can then use the following method to get the data as a double array.
-				x1 = a.asDoubleArray();
-				for (int i1 = 0; i1 < x1.length; i1++) System.out.println(x1[i1]); 
+				 stockNames=Ops.retrieveStocks(Portfolio, true);
 
-					a = re.eval("data1$Desperation");
-					y1 = a.asDoubleArray();
-					for (int i1 = 0; i1 < y1.length; i1++) System.out.println(y1[i1]); 
-						
-				// That's got our two original data sets out. Now we plot that data.
-				// Note that this opens up the R plot window. This will hang until the 
-				// application is terminated, which you can do on the Eclipse output window by 
-				// pushing the square red icon. This causes some issues, as we'll see.
+				try {
+				REXP a = re.eval("data1 <- read.csv(\"C://Users/milan/Desktop/data.tab.txt\", header = TRUE)");
+				a = re.eval("attach(data1)");
+				a = re.eval("data1$Age");
+
+
+				a = re.eval("data1$Desperation");
+
 				a = re.eval("plot(Age, Desperation, main=\"Age vs. Desperation\")");
 
-				// Do the regression.
 				a = re.eval("lineeq <- lm(Desperation ~ Age, data=data1)");
 				a = re.eval("x <- seq(min(Age), max(Age), by=10.0)");
-						
-				// Get the novel x-axis data.
-				x2 = a.asDoubleArray();
-				for (int i1 = 0; i1 < x2.length; i1++) System.out.println(x2[i1]);
+				System.out.println(re.eval("x"));
 						
 				a = re.eval("newData <- data.frame(Age = x)");
 				a = re.eval("predictions <- predict(lineeq, newdata = newData)");
 
-				// Get the predicted y-axis data.
-				y2 = a.asDoubleArray();
-				for (int i1 = 0; i1 < y2.length; i1++) System.out.println(y2[i1]); 
 
-				// Add to the plot. Or so we'd think. 
 				a = re.eval("lines(Age, predictions)");
 				a = re.eval("title(main=\"Autos\", col.main=\"red\", font.main=4)");
 
-				// Clean up.
 				a = re.eval("detach(data1)");
 				a = re.eval("rm (data1, lineeq, newData, predictions, x)");
 
@@ -562,7 +579,8 @@ public class HomeController {
 					System.out.println(e.getMessage());
 				}
 			 
-			    }
+			 }
+		}
 				 
 				 
 			 }

@@ -150,21 +150,41 @@ public class DBOperations {
 	 * @throws SQLException
 	 * Retrieves list of stocks in a given portfolio
 	 */
-	public List<String> retrieveStocks(String portfolioName) throws SQLException {
-		Connection connection=null;
-		ResultSet rs=null;
+	public List<String> retrieveStocks(String portfolioName, Boolean Check) throws SQLException {
 		List<String> stockNames=new ArrayList<>();
-		try{
-		connection=DBConnector.getConnection();
-		PreparedStatement ps=connection.prepareStatement("SELECT * FROM "+portfolioName);
-		rs=ps.executeQuery();
-		while(rs.next()){
-			stockNames.add(rs.getString("Ticker")+ " "+ rs.getString("Name"));
+		if(Check){
+			Connection connection=null;
+			ResultSet rs=null;
+			try{
+			connection=DBConnector.getConnection();
+			PreparedStatement ps=connection.prepareStatement("SELECT * FROM "+portfolioName);
+			rs=ps.executeQuery();
+			while(rs.next()){
+				stockNames.add(rs.getString("Ticker").toUpperCase());
+			}
+			
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		
-		}
-		catch(Exception e){
-			e.printStackTrace();
+		else{
+			Connection connection=null;
+			ResultSet rs=null;
+			try{
+			connection=DBConnector.getConnection();
+			PreparedStatement ps=connection.prepareStatement("SELECT * FROM "+portfolioName);
+			rs=ps.executeQuery();
+			while(rs.next()){
+				stockNames.add((rs.getString("Ticker")+ " "+ rs.getString("Name")).toUpperCase());
+			}
+			
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			
 		}
 		return stockNames;
 	
