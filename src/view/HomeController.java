@@ -524,7 +524,12 @@ public class HomeController {
 
 				 REXP rLink;
 				 rLink = re.eval("source(\"FinVision.R\")");
+				
+				 
+				 
 				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + ")");
+
+				 System.out.println(re.eval("Apple"));
 
 				 
 				 /* re.eval("stocks <- as.xts(data.frame(" + combinePlot + "))");
