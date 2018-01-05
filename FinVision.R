@@ -37,14 +37,22 @@ singlePortfolio <- function(TickerList, Size, start, end){
     candleChart(z, up.col= "green", dn.col = "red", theme = "white", name = y )
     #print(plot(param, main= paste(deparse(as.name(i)), "", sep="") , ylab="Price", xlab="Time"))
     counter <- counter + 1
-    
+
   }
   windows.options(record=FALSE)
   
   
+ 
+  n <- length(gg_list)
+  nCol <- floor(sqrt(n))
+  dev.new()
+  do.call(grid.arrange, c(gg_list, ncol=nCol))
   
   return(AAPL)
+  
 }
+
+
 
 
 

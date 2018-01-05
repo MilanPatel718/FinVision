@@ -592,6 +592,9 @@ public class HomeController {
 				 rLink = re.eval("source(\"FinVision.R\")");
 				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + ")");
 
+
+				 System.out.println(re.eval("Apple"));
+
 				 
 				 /* re.eval("stocks <- as.xts(data.frame(" + combinePlot + "))");
 				 System.out.println("stocks <- as.xts(data.frame(" + combinePlot + "))");
