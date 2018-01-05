@@ -10,21 +10,27 @@ import javafx.event.EventHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.Date;
 
 import application.DBOperations;
 import application.FinVision;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -32,6 +38,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -41,7 +48,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
+import javafx.util.Pair;
+
 import org.rosuda.JRI.*;
+
 
 /**
  * @author milan
@@ -63,6 +73,9 @@ public class HomeController {
 	@FXML Button Finish;
 	@FXML Pane TopPane;
 	@FXML Pane BottomPane;
+	
+	public String start;
+	public String end;
 	
 	
 	//Static Classes
@@ -475,17 +488,72 @@ public class HomeController {
 			alert.showAndWait();
 			
 		}
-		else if(PortfolioList.getSelectionModel().getSelectedItems().size()>2){
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Error");
-			alert.setContentText("Only select 2 portfolios to compare");
-			alert.showAndWait();
-			
-		}
 		else{
-			 ObservableList<String> selectedItems =  PortfolioList.getSelectionModel().getSelectedItems();
-			 Rengine re = Rengine.getMainEngine();
+			
+			Dialog<Pair<String, String>> dialog = new Dialog<>();
+			dialog.setTitle("Date Specification");
+			dialog.setHeaderText("Input start and end date range (Ensure start date is before end date!)");
+			
+			start=null;
+			end=null;
+			ButtonType dateButton = new ButtonType("Enter", ButtonData.OK_DONE);
+			dialog.getDialogPane().getButtonTypes().addAll(dateButton, ButtonType.CANCEL);
+			
+			GridPane grid = new GridPane();
+			grid.setHgap(10);
+			grid.setVgap(10);
+			grid.setPadding(new Insets(20, 150, 10, 10));
+			
+			DatePicker startDate = new DatePicker();
+			DatePicker endDate = new DatePicker();
+			
+			grid.add(new Label("Start Date:"), 0, 0);
+			grid.add(startDate, 1, 0);
+			grid.add(new Label("End Date:"), 0, 1);
+			grid.add(endDate, 1, 1);
+			
+			dialog.getDialogPane().setContent(grid);
+			
+
+			dialog.setResultConverter(dialogButton -> {
+			    if (dialogButton == dateButton) {
+			    	if(startDate.getValue()==null || endDate.getValue()==null){
+			    		Alert alert = new Alert(AlertType.ERROR);
+			    		alert.setTitle("Error Dialog");
+			    		alert.setHeaderText("Incorrect Entry");
+			    		alert.setContentText("Please make sure fields aren't blank");
+			    		
+			    		alert.showAndWait();
+			    		return null;
+			    		
+			    	}
+			    	if(startDate.getValue().compareTo(endDate.getValue()) < 0){
+			    		DateTimeFormatter s = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			    		start = startDate.getValue().format(s);
+			    		end = endDate.getValue().format(s);
+			    		return new Pair<>(start, end);
+			    		
+			    	}
+			    	else{
+			    		Alert alert = new Alert(AlertType.ERROR);
+			    		alert.setTitle("Error Dialog");
+			    		alert.setHeaderText("Incorrect Entry");
+			    		alert.setContentText("Please enter dates in correct order");
+			    		
+			    		alert.showAndWait();
+			    		return null;
+			    	}
+			    }
+				return null;
+			} );
+			
+			dialog.showAndWait();
+			if(start == null || end == null){
+				return;
+			}
+			
+			ObservableList<String> selectedItems =  PortfolioList.getSelectionModel().getSelectedItems();
+			Rengine re = Rengine.getMainEngine();
 			 if (re==null){
 				re = new Rengine(null, false, null);
 			 }
@@ -493,38 +561,36 @@ public class HomeController {
 			 // Recommended, though not needed as such.
 			 if (!Rengine.versionCheck()) {System.exit(0);}
 			 
-			 
-			 //If user selects 1 portfolio, display plots 2x2
-			 if(selectedItems.size()==1){
-				 List<String> stockNames=new ArrayList<String>();
+			
+			 List<String> stockNames=new ArrayList<String>();
 					
-				 //Connect to database
-				 DBOperations Ops=new DBOperations();
-				 stockNames=Ops.retrieveStocks(selectedItems.get(0), true);
+			 //Connect to database
+			 DBOperations Ops=new DBOperations();
+			 stockNames=Ops.retrieveStocks(selectedItems.get(0), true);
 				 
-				 int Size= stockNames.size() + 1;
+			 int Size= stockNames.size();
 
 				 
-				 String combinePlot = "";
-				 String vector = "c(";
-				 for(int i=0; i<stockNames.size(); i++){
-					 String ticker=stockNames.get(i).toString();
-					 if(i==stockNames.size()-1){
-						 vector = vector + "\"" + ticker + "\")";
-						 combinePlot= combinePlot+ ticker +"="+ ticker+"[, \""+ ticker+".Close\"]";
-					 }
+			 String combinePlot = "";
+			 String vector = "c(";
+			 for(int i=0; i<stockNames.size(); i++){
+				 String ticker=stockNames.get(i).toString();
+				 if(i==stockNames.size()-1){
+					 vector = vector + "\"" + ticker + "\")";
+					 combinePlot= combinePlot+ ticker +"="+ ticker+"[, \""+ ticker+".Close\"]";
+				 }
 						 
-					 else{
-						 vector = vector + "\"" + ticker + "\", ";
-						 combinePlot= combinePlot+ ticker +"= "+ ticker+"[, \""+ ticker+".Close\"], ";
-					 }
+				 else{
+					 vector = vector + "\"" + ticker + "\", ";
+					 combinePlot= combinePlot+ ticker +"= "+ ticker+"[, \""+ ticker+".Close\"], ";
+				 }
 					 
 
 				 	}
 
 				 REXP rLink;
 				 rLink = re.eval("source(\"FinVision.R\")");
-				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + ")");
+				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + ")");
 
 				 
 				 /* re.eval("stocks <- as.xts(data.frame(" + combinePlot + "))");
@@ -535,63 +601,10 @@ public class HomeController {
 						+ "xlab = \"Date\", ylab = \"Return\")");
 				 re.eval("legend(\"topleft\", " + vector +", lty = 1:3, cex=0.5"); */
 				
-				 
-				 	
-				 	
-			 
-			 }
-			
-			 //If user selects 2 portfolios
-			 else{
-			 for(int i=0; i<selectedItems.size(); i++){
-				 String Portfolio=selectedItems.get(i);
-				 List<String> stockNames=new ArrayList<String>();
-					
-				 //Connect to database
-				 DBOperations Ops=new DBOperations();
-				 stockNames=Ops.retrieveStocks(Portfolio, true);
-
-				try {
-				REXP a = re.eval("data1 <- read.csv(\"C://Users/milan/Desktop/data.tab.txt\", header = TRUE)");
-				a = re.eval("attach(data1)");
-				a = re.eval("data1$Age");
-
-
-				a = re.eval("data1$Desperation");
-
-				a = re.eval("plot(Age, Desperation, main=\"Age vs. Desperation\")");
-
-				a = re.eval("lineeq <- lm(Desperation ~ Age, data=data1)");
-				a = re.eval("x <- seq(min(Age), max(Age), by=10.0)");
-				System.out.println(re.eval("x"));
-						
-				a = re.eval("newData <- data.frame(Age = x)");
-				a = re.eval("predictions <- predict(lineeq, newdata = newData)");
-
-
-				a = re.eval("lines(Age, predictions)");
-				a = re.eval("title(main=\"Autos\", col.main=\"red\", font.main=4)");
-
-				a = re.eval("detach(data1)");
-				a = re.eval("rm (data1, lineeq, newData, predictions, x)");
-
-				} catch(Exception e) {
-					System.out.println(e.getMessage());
-				}
-			 
-			 }
-		}
-				 
-				 
-			 }
+			}
+	}
 		
 		
-		}
-		
-		
-	
-		
-	
 	/**
 	 * @throws IOException
 	 * Restarts Home View and updates list of portfolios
@@ -657,7 +670,6 @@ public class HomeController {
         }
     );
 	
-		PortfolioList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
 	}
 
