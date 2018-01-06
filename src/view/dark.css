@@ -1,5 +1,5 @@
 .background, .Item{
-    -fx-background-color: #1d1d1d;
+    -fx-background-color: #485160;
     -fx-text-fill: white;
 }
 
@@ -7,11 +7,50 @@
 	-fx-text-fill: white;
 }
 
-.HomeButton{
-	-fx-text-fill: white;
+.text-area1 {
+    -fx-background-image: url("topBackground.jpg");
+    -fx-text-fill: white;
 }
 
-.HomeButton .content{
-	-fx-background-color: #1d1d1d;
-	
+.text-area2 {
+    -fx-background-image: url("bottomBackground.jpg");
+    -fx-text-fill: white;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.list-cell:selected {
+    -fx-background-color: blue ;
+}
+
+.list-cell {
+	-fx-text-fill: white;
+	-fx-background-color: black;
+
+}
+.list-cell:empty{
+	-fx-background-image: url("topBackground.jpg");
+}
+
+
+.list-cell:empty .list-cell {
+    -fx-border-width: 0px;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+   -fx-background-color: black;
+}
+.split-pane:vertical > .split-pane-divider {
+   -fx-background-color: black;
 }

@@ -2,9 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -15,28 +12,9 @@
 
 <VBox minHeight="400.0" minWidth="400.0" prefHeight="500.0" prefWidth="500.0" styleClass="background" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MenuBar styleClass="background">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" styleClass="Item" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" styleClass="Item" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" styleClass="Item" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
       <SplitPane fx:id="Split" dividerPositions="0.5" prefHeight="398.0" prefWidth="460.0" VBox.vgrow="ALWAYS">
         <items>
-            <ListView fx:id="PortfolioList" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="PortfolioList" prefHeight="200.0" prefWidth="200.0" styleClass="list" />
             <GridPane fx:id="Grid">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,16 +24,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="HomeButton" text="Click below to create a financial portfolio, to which you may add any stock/financial instrument with valid ticker symbols" wrapText="true">
+                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="text-area1" text="Click below to create a financial portfolio, to which you may add any stock/financial instrument with valid ticker symbols" wrapText="true">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="15.0" />
+                        <Font name="Comic Sans MS Bold" size="24.0" />
                      </font></TextArea>
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="HomeButton" text="1. Select any portfolio on the left and click below&#10;2. Specify a start date and an end date&#10;3. Press enter to view Candle Charts for each item and press pg up/pg down to navigate through all plots when done&#10;" wrapText="true" GridPane.rowIndex="1">
+                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="text-area2" text="1. Select any portfolio on the left and click below&#10;2. Specify a start date and an end date&#10;3. Press enter to view Candle Charts for each item and press pg up/pg down to navigate through all plots when done&#10;" wrapText="true" GridPane.rowIndex="1">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="14.0" />
+                        <Font name="Comic Sans MS Bold" size="21.0" />
                      </font></TextArea>
-                  <Button fx:id="Create" mnemonicParsing="false" onAction="#openCreateView" prefHeight="31.0" prefWidth="130.0" text="Create" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
-                  <Button fx:id="Visualize" mnemonicParsing="false" onAction="#visualizeData" prefHeight="31.0" prefWidth="130.0" text="Visualize" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                  <Button fx:id="Create" graphicTextGap="8.0" mnemonicParsing="false" onAction="#openCreateView" prefHeight="31.0" prefWidth="120.0" text="Create" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+                  <Button fx:id="Visualize" mnemonicParsing="false" onAction="#visualizeData" prefHeight="31.0" prefWidth="106.0" text="Visualize" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                </children>
             </GridPane>
         </items>

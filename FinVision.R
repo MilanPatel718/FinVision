@@ -10,15 +10,6 @@ singlePortfolio <- function(TickerList, Size, start, end){
   Size <- as.integer(Size)
   start <- as.Date(start)
   end <- as.Date(end)
- 
-  #if(Size%%2!=0){
-  #  rows= (Size/2) + 1
-  #}
-  #else{
-  #  rows=Size/2
-  #}
-  #par(mfrow=c(rows,2))
-  #par(mar=c(1,1,1,1))
 
   symbolFunction <- function(sym){
     return (tryCatch(getSymbols(sym, src = "yahoo", from = start, to = end), error= function(e) NULL))
