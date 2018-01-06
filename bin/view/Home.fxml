@@ -46,13 +46,13 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="HomeButton" text="Click this button to create a financial portfolio! " wrapText="true">
+                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="HomeButton" text="Click below to create a financial portfolio, to which you may add any stock/financial instrument with valid ticker symbols" wrapText="true">
                      <font>
-                        <Font name="SansSerif Regular" size="24.0" />
+                        <Font name="Comic Sans MS Bold" size="15.0" />
                      </font></TextArea>
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="HomeButton" text="Select any number of portfolios on the left and then click this button to visualize!" wrapText="true" GridPane.rowIndex="1">
+                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="HomeButton" text="1. Select any portfolio on the left and click below&#10;2. Specify a start date and an end date&#10;3. Press enter to view Candle Charts for each item and press pg up/pg down to navigate through all plots when done&#10;" wrapText="true" GridPane.rowIndex="1">
                      <font>
-                        <Font name="SansSerif Regular" size="24.0" />
+                        <Font name="Comic Sans MS Bold" size="14.0" />
                      </font></TextArea>
                   <Button fx:id="Create" mnemonicParsing="false" onAction="#openCreateView" prefHeight="31.0" prefWidth="130.0" text="Create" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
                   <Button fx:id="Visualize" mnemonicParsing="false" onAction="#visualizeData" prefHeight="31.0" prefWidth="130.0" text="Visualize" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />

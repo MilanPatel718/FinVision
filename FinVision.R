@@ -5,27 +5,30 @@ singlePortfolio <- function(TickerList, Size, start, end){
   library(magrittr)
   .jinit()
   .jengine(TRUE)
- # start <- as.Date("2016-11-01")
- # end <- as.Date("2017-01-07")
+
   TickerList <- as.vector(TickerList)
   Size <- as.integer(Size)
-   start <- start
-   end <- end
-  rows <- 2
-  if(Size%%2!=0){
-    rows= (Size/2) + 1
-  }
-  else{
-    rows=Size/2
-  }
-
+  start <- as.Date(start)
+  end <- as.Date(end)
+ 
+  #if(Size%%2!=0){
+  #  rows= (Size/2) + 1
+  #}
+  #else{
+  #  rows=Size/2
+  #}
   #par(mfrow=c(rows,2))
   #par(mar=c(1,1,1,1))
-  SymbolList <- getSymbols(TickerList, src = "yahoo", from = as.Date(start), to = as.Date(end))
+
+  symbolFunction <- function(sym){
+    return (tryCatch(getSymbols(sym, src = "yahoo", from = start, to = end), error= function(e) NULL))
+  }
+  adjustedSymbols <- unlist(lapply(TickerList, symbolFunction))
+  SymbolList <- getSymbols(adjustedSymbols, src ="yahoo", from = start, to =end)
   
   windows(width =90, height = 60, record=TRUE)
   counter<-1
-  for(i in SymbolList){
+  for(i in adjustedSymbols){
     if(counter>1){
       op <- par(ask=TRUE)
       on.exit(par(op))
@@ -33,8 +36,11 @@ singlePortfolio <- function(TickerList, Size, start, end){
     x <- paste(deparse(as.name(i)), ".Close", sep="")
     y <- deparse(as.name(i))
     z <- eval(as.name(y))
+    if(is.null(z)){
+      next
+    }
     param <- z[, x]
-    candleChart(z, up.col= "green", dn.col = "red", theme = "white", name = y )
+    candleChart(z, up.col= "green", dn.col = "red", theme = "black",  name = y )
     #print(plot(param, main= paste(deparse(as.name(i)), "", sep="") , ylab="Price", xlab="Time"))
     counter <- counter + 1
 
@@ -51,7 +57,6 @@ singlePortfolio <- function(TickerList, Size, start, end){
   return(AAPL)
   
 }
-
 
 
 
