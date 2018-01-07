@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="217.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="550.0" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane fx:id="TopPane" prefHeight="105.0" prefWidth="600.0">
+      <Pane fx:id="TopPane" prefHeight="157.0" prefWidth="800.0" styleClass="pane1">
          <children>
-            <Button fx:id="Submit" layoutX="441.0" layoutY="33.0" mnemonicParsing="false" onAction="#submitPortfolioName" prefHeight="39.0" prefWidth="117.0" text="Submit" />
-            <TextArea layoutX="14.0" layoutY="6.0" prefHeight="95.0" prefWidth="200.0" text="Step 1:  Enter a name for your new portfolio. Duplicate names are not allowed." wrapText="true">
+            <Button fx:id="Submit" layoutX="300.0" layoutY="88.0" mnemonicParsing="false" onAction="#submitPortfolioName" prefHeight="39.0" prefWidth="117.0" text="Submit" />
+            <TextArea layoutX="14.0" layoutY="6.0" prefHeight="121.0" prefWidth="200.0" styleClass="createText" text="Step 1:  Enter a name for your new portfolio. Duplicate names are not allowed." wrapText="true">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -20,17 +20,17 @@
             <TextField fx:id="Pname" layoutX="231.0" layoutY="37.0" promptText="Portfolio Name" />
          </children>
       </Pane>
-      <Pane fx:id="BottomPane" disable="true" prefHeight="114.0" prefWidth="600.0">
+      <Pane fx:id="BottomPane" disable="true" prefHeight="157.0" prefWidth="800.0" styleClass="pane2">
          <children>
-            <TextArea layoutX="16.0" layoutY="8.0" prefHeight="95.0" prefWidth="200.0" text="Step 2: Enter Ticker and Name for stock. Add any number and click Finish when done.&#10;" wrapText="true">
+            <TextArea layoutX="16.0" layoutY="8.0" prefHeight="121.0" prefWidth="200.0" styleClass="createText" text="Step 2: Enter Ticker and Name for stock. Add any number and click Finish when done.&#10;" wrapText="true">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </TextArea>
-            <TextField fx:id="Ticker" layoutX="228.0" layoutY="25.0" promptText="Ticker" />
-            <TextField fx:id="StockName" layoutX="228.0" layoutY="68.0" promptText="Name" />
-            <Button fx:id="Add" layoutX="429.0" layoutY="41.0" mnemonicParsing="false" onAction="#addStock" prefHeight="31.0" prefWidth="71.0" text="Add" />
-            <Button fx:id="Finish" layoutX="528.0" layoutY="68.0" mnemonicParsing="false" onAction="#FinishCreate" text="Finish" />
+            <TextField fx:id="Ticker" layoutX="228.0" layoutY="8.0" promptText="Ticker" />
+            <TextField fx:id="StockName" layoutX="228.0" layoutY="44.0" promptText="Name" />
+            <Button fx:id="Add" layoutX="343.0" layoutY="84.0" mnemonicParsing="false" onAction="#addStock" prefHeight="31.0" prefWidth="71.0" text="Add" />
+            <Button fx:id="Finish" layoutX="433.0" layoutY="40.0" mnemonicParsing="false" onAction="#FinishCreate" prefHeight="39.0" prefWidth="92.0" text="Finish" />
          </children>
       </Pane>
    </children>

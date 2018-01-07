@@ -30,7 +30,7 @@ public class DBConnector {
 	   }
 	   
 	   //Establish MySQL connection
-	   private Connection createConnection(){
+	   private Connection createConnection() throws IOException{
 		   Connection connection=null;
 		   try {
 			BufferedReader br=new BufferedReader(new FileReader("Credentials.txt"));
@@ -49,6 +49,7 @@ public class DBConnector {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			br.close();
 			
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -62,7 +63,7 @@ public class DBConnector {
 		   return connection;
 	   }
 	   
-	   public static Connection getConnection(){  
+	   public static Connection getConnection() throws IOException{  
 	     return instance.createConnection();
 	   }
 	   

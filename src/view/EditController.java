@@ -2,29 +2,18 @@ package view;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import application.DBOperations;
 import application.FinVision;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import view.HomeController.CustomCell;
 import javafx.scene.control.Alert.AlertType;
 
 public class EditController {
@@ -140,6 +129,7 @@ public class EditController {
 				alert.setContentText("Portfolio Successfully Renamed");
 				alert.showAndWait();
 				
+				
 			}
 			
 		}
@@ -156,31 +146,19 @@ public class EditController {
 		Button b=(Button) E.getSource();
 		Stage stage=(Stage)b.getScene().getWindow();
 		stage.close();
-		FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
-		loader.setController(new HomeController());
-		VBox root = null;
-		try {
-			root = (VBox)loader.load();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		HomeController homeController= loader.getController();
-		Stage primaryStage = FinVision.getPrimaryStage();
-		primaryStage.close();
 		
-		try {
-			homeController.start(primaryStage);
-		} catch (SQLException e) {
+        try {
+    		FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
+    		loader.setController(new HomeController());
+    		Parent root = loader.load();
+    		HomeController controller = loader.getController();
+    		controller.start(FinVision.getPrimaryStage());
+			FinVision.getPrimaryScene().setRoot(root);
+			
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Scene scene=new Scene(root, 800, 600);
-		primaryStage.setMinHeight(700);
-		primaryStage.setMinWidth(830);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("FinVision");
-		primaryStage.show();
 		
 	}
 	

@@ -1,4 +1,5 @@
 package application;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,10 @@ public class DBOperations {
 	/**
 	 * @return PortfolioNames
 	 * @throws SQLException 
+	 * @throws IOException 
 	 * Retrives list of all Portfolio names (tables in DB) 
 	 */
-	public List<String> retrieveNames() throws SQLException{
+	public List<String> retrieveNames() throws SQLException, IOException{
 		  ResultSet rs=null;
 		  Connection connection=null;
 		  List<String> PortfolioNames=new ArrayList<>();
@@ -36,9 +38,10 @@ public class DBOperations {
 	 * @param deletePortfolio
 	 * @return boolean
 	 * @throws SQLException
-	 * Deletes selected portfolio from database, returns true if successful and false otherwise
+	 * @throws IOException 
+	 *  Deletes selected portfolio from database, returns true if successful and false otherwise
 	 */
-	public boolean deletePortfolio(String deletePortfolio) throws SQLException{
+	public boolean deletePortfolio(String deletePortfolio) throws SQLException, IOException{
 		Statement stmt=null;
 		Connection connection=null;
 		try{
@@ -71,9 +74,10 @@ public class DBOperations {
 	 * @param PortfolioName
 	 * @return boolean
 	 * @throws SQLException
+	 * @throws IOException
 	 * Creates portfolio with requested name, given that no table with the same name exists
 	 */
-	public boolean createPortfolio(String PortfolioName) throws SQLException{
+	public boolean createPortfolio(String PortfolioName) throws SQLException, IOException{
 		Statement stmt=null;
 		Connection connection=null;
 		try{
@@ -111,9 +115,10 @@ public class DBOperations {
 	 * @param stockName
 	 * @return boolean
 	 * @throws SQLException
+	 * @throws IOException
 	 * Adds Stocks to portfolio with Ticker as primary key
 	 */
-	public boolean addStock(String Ticker, String stockName, String portfolioName) throws SQLException{
+	public boolean addStock(String Ticker, String stockName, String portfolioName) throws SQLException, IOException{
 		Statement stmt=null;
 		Connection connection=null;
 		try{
@@ -195,9 +200,10 @@ public class DBOperations {
 	 * @param rename
 	 * @return
 	 * @throws SQLException
+	 * @throws IOException
 	 * Executes query to rename portfolio
 	 */
-	public boolean renamePortfolio(String Original, String rename) throws SQLException{
+	public boolean renamePortfolio(String Original, String rename) throws SQLException, IOException{
 		Connection connection=null;
 		Statement stmt=null;
 		try{
@@ -234,9 +240,10 @@ public class DBOperations {
 	 * @param Ticker
 	 * @return
 	 * @throws SQLException
+	 * @throws IOException
 	 * Deletes specified stock in current portfolio
 	 */
-	public boolean deleteStock(String portfolioName, String Ticker) throws SQLException{
+	public boolean deleteStock(String portfolioName, String Ticker) throws SQLException, IOException{
 		Connection connection=null;
 		Statement stmt=null;
 		try{

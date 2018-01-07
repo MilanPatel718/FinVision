@@ -7,14 +7,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<HBox fx:id="editBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="editBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="stockList" prefHeight="400.0" prefWidth="169.0" />
-      <VBox prefHeight="400.0" prefWidth="431.0">
+      <ListView fx:id="stockList" prefHeight="400.0" prefWidth="169.0" HBox.hgrow="ALWAYS" />
+      <VBox prefHeight="400.0" prefWidth="431.0" HBox.hgrow="ALWAYS">
          <children>
-            <TextArea editable="false" prefHeight="174.0" prefWidth="357.0" text="Delete: Double click any stock on the left to delete it. &#10;&#10;Add: Fill out the Ticker and Stock Name fields below and click add to add a stock to the current portfolio&#10;&#10;Rename: Fill out the Portfolio Name field below and click rename to change the portfolio name&#10;" wrapText="true" />
-            <Pane prefHeight="227.0" prefWidth="357.0">
+            <TextArea editable="false" prefHeight="174.0" prefWidth="357.0" styleClass="text-area1" text="Delete: Double click any stock on the left to delete it. &#10;&#10;Add: Fill out the Ticker and Stock Name fields below and click add to add a stock to the current portfolio&#10;&#10;Rename: Fill out the Portfolio Name field below and click rename to change the portfolio name&#10;" wrapText="true" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></TextArea>
+            <Pane prefHeight="227.0" prefWidth="357.0" styleClass="text-area2" VBox.vgrow="ALWAYS">
                <children>
                   <TextField fx:id="editTicker" layoutX="14.0" layoutY="14.0" promptText="Ticker" />
                   <TextField fx:id="editStock" layoutX="14.0" layoutY="56.0" promptText="Stock Name" />

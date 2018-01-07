@@ -1,19 +1,15 @@
-.background, .Item{
-    -fx-background-color: #485160;
-    -fx-text-fill: white;
-}
-
-.menu .label{
-	-fx-text-fill: white;
-}
-
+/* Text Area Stylings */
 .text-area1 {
     -fx-background-image: url("topBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
     -fx-text-fill: white;
 }
 
 .text-area2 {
     -fx-background-image: url("bottomBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
     -fx-text-fill: white;
 }
 
@@ -30,27 +26,57 @@
     -fx-background-color: transparent;
 }
 
+/*List View/List Cell Stylings */
+.list-view{
+    -fx-background-image: url("cellBackground.png");
+}
+
 .list-cell:selected {
     -fx-background-color: blue ;
+    -fx-background-image: none;
 }
 
 .list-cell {
 	-fx-text-fill: white;
-	-fx-background-color: black;
+	-fx-background-image: url("cellBackground.png");
 
 }
-.list-cell:empty{
-	-fx-background-image: url("topBackground.jpg");
-}
-
-
 .list-cell:empty .list-cell {
     -fx-border-width: 0px;
 }
 
+/*Split Pane Stylings */
 .split-pane:horizontal > .split-pane-divider {
-   -fx-background-color: black;
+   -fx-background-image: url("cellBackground.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
 }
 .split-pane:vertical > .split-pane-divider {
-   -fx-background-color: black;
+   -fx-background-image: url("cellBackground.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
 }
+
+/* Create Stage Stylings */
+.createText{
+    -fx-background-image: url("cellBackground.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-text-fill: white;
+}
+
+.pane1{
+    -fx-background-image: url("topBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-text-fill: white;
+}
+
+.pane2{
+    -fx-background-image: url("bottomBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-text-fill: white;
+}
+
+/* End CSS Document */

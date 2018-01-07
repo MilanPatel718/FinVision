@@ -11,8 +11,6 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.rosuda.JRI.*;
-
 
 /**
  * @author milan
@@ -20,6 +18,7 @@ import org.rosuda.JRI.*;
  */
 public class FinVision extends Application {
 	 private static Stage pStage;
+	 private static Scene pScene;
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException, SQLException {
@@ -34,6 +33,7 @@ public class FinVision extends Application {
 		//Set preferred dimensions for application home
 		homeController.start(primaryStage);
 		Scene scene=new Scene(root, 800, 600);
+		setPrimaryScene(scene);
 		primaryStage.setMinHeight(700);
 		primaryStage.setMinWidth(830);
 		primaryStage.setScene(scene);
@@ -50,7 +50,16 @@ public class FinVision extends Application {
 	        return pStage;
 	    }
 
-	    private void setPrimaryStage(Stage pStage) {
-	        this.pStage = pStage;
+	 private void setPrimaryStage(Stage pStage) {
+	        FinVision.pStage = pStage;
 	    }
+	    
+	 //Getter and Setters for the primary scene of the application
+	 public static Scene getPrimaryScene() {
+	       return pScene;
+	    }
+
+	private void setPrimaryScene(Scene pScene) {
+		     FinVision.pScene = pScene;
+		    }
 }

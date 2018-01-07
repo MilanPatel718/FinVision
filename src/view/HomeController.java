@@ -1,44 +1,36 @@
 package view;
 
-
-import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
-import java.util.Date;
-
 import application.DBOperations;
 import application.FinVision;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -46,7 +38,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
@@ -78,12 +69,12 @@ public class HomeController {
 	public String end;
 	
 	
-	//Static Classes
+	//Inner class for custom ListView Cell
 	/**
 	 * @author milan
 	 *Allows callback for ListView Cell Factory
 	 */
-	class CustomCell extends ListCell<String>{
+	public class CustomCell extends ListCell<String>{
 		@FXML private Label PName;
 		@FXML private HBox container;
 		@FXML private Button Edit;
@@ -96,7 +87,45 @@ public class HomeController {
 		@FXML Button Rename;
 		@FXML Button FinishEdit;
 		
+		public CustomCell(){
+			FXMLLoader mLoader = new FXMLLoader(getClass().getResource("/view/CustomCell.fxml"));
+			mLoader.setController(this);
+            try {
+                mLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {              
+                    Edit.setVisible(true);
+                    Delete.setVisible(true);
+                    
+                }
+            }); 
+            PortfolioList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection)->{
+            	Edit.setVisible(false);
+            	Delete.setVisible(false);
+            });
+		}
 		
+		@Override
+		protected void updateItem(String item, boolean empty){
+			super.updateItem(item, empty);
+			if(empty || item==null){
+				setText(null);
+				setGraphic(null);
+			}
+			else {     
+				this.setGraphic(this);
+	           	PName.setText(item);
+				setText(null);
+				setGraphic(container);
+			}
+			
+		}
 		
 		/**
 		 * @param E
@@ -119,35 +148,25 @@ public class HomeController {
 			alert.setContentText("Are you sure you want to delete this portfolio?");
 			Optional<ButtonType> result = alert.showAndWait();
 			
+			//Delete the item
 			if(result.get()==ButtonType.OK){
 				DBOperations Ops=new DBOperations();
 				Boolean delete=Ops.deletePortfolio(deletePortfolio);
 				
 				//Refresh window if successful delete
 				if(delete){
-					FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
-					loader.setController(new HomeController());
-					VBox root= (VBox)loader.load();
-					HomeController homeController= loader.getController();
-					Stage primaryStage = FinVision.getPrimaryStage();
-					primaryStage.close();
-					
-					homeController.start(primaryStage);
-					Scene scene=new Scene(root, 800, 600);
-					primaryStage.setMinHeight(700);
-					primaryStage.setMinWidth(830);
-					primaryStage.setScene(scene);
-					primaryStage.setTitle("FinVision");
-					primaryStage.show();		
+					int index = PortfolioList.getSelectionModel().getSelectedIndex();
+					PortfolioList.getItems().remove(index);
+					if (PortfolioList.getItems().isEmpty()){
+						PortfolioList.getSelectionModel().clearSelection();
+					}
 				}
 				//Handle if unsuccessful delete
 				else{
 				}
 				
 			}
-			else{
-			}
-
+			else{}
 			
 		}
 	
@@ -175,42 +194,6 @@ public class HomeController {
 			createStage.setMinHeight(430);
 			createStage.setMinWidth(600);
 			createStage.setScene(stageScene);
-			
-			//Override method for closing application
-			createStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			    @Override
-			    public void handle(WindowEvent event) {
-
-			        // consume event
-			        event.consume();
-			        createStage.close();
-			        try {
-			        	FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
-						loader.setController(new HomeController());
-						VBox root= (VBox)loader.load();
-						HomeController homeController= loader.getController();
-						Stage primaryStage = FinVision.getPrimaryStage();
-						primaryStage.close();
-						
-						homeController.start(primaryStage);
-						Scene scene=new Scene(root, 800, 600);
-						primaryStage.setMinHeight(700);
-						primaryStage.setMinWidth(830);
-						primaryStage.setScene(scene);
-						primaryStage.setTitle("FinVision");
-						primaryStage.show();	
-						
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}		
-			        
-			        
-			    }
-			});
 			
 			//Extract portfolio name from cell
 			Button B=(Button)E.getSource();
@@ -261,6 +244,9 @@ public class HomeController {
 							} catch (SQLException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 			   			
 			   			}
@@ -271,42 +257,10 @@ public class HomeController {
 			});
 			
 			//Show edit screen
+			createStage.getIcons().add(new Image("file:resources/images/icon.png"));
 			createStage.show();
-			
-			
-			
-		}
-		
-		private FXMLLoader mLLoader;
-		
-		@Override
-		protected void updateItem(String item, boolean empty){
-			super.updateItem(item, empty);
-			if(empty || item==null){
-				setText(null);
-				setGraphic(null);
-			}
-			else {
-	            if (mLLoader == null) {
-	                mLLoader = new FXMLLoader(getClass().getResource("/view/CustomCell.fxml"));
-	                mLLoader.setController(this);
-
-	                try {
-	                    mLLoader.load();
-	                } catch (IOException e) {
-	                    e.printStackTrace();
-	                }
-
-	            }
-	            
-	            PName.setText(item);
-				setText(null);
-				setGraphic(container);
-			}
-			
 		}
 	}
-	
 	
 	//Controller Methods
 	
@@ -327,27 +281,10 @@ public class HomeController {
 		createStage.setMinHeight(300);
 		createStage.setMinWidth(600);
 		createStage.setScene(stageScene);
-		
-		//Override method for closing application
-		createStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		    @Override
-		    public void handle(WindowEvent event) {
 
-		        // consume event
-		        event.consume();
-		        createStage.close();
-		        try {
-					restart();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}		
-		        
-		        
-		    }
-		});
 		
 		//Show Creation window
+		createStage.getIcons().add(new Image("file:resources/images/icon.png"));
 		createStage.show();
 		
 		
@@ -456,13 +393,27 @@ public class HomeController {
 	 * @param E
 	 * @throws IOException
 	 * Closes Portfolio creation window and returns user to home screen
+	 * @throws SQLException 
 	 */
 	@FXML
-	private void FinishCreate(ActionEvent E) throws IOException{
+	private void FinishCreate(ActionEvent E) throws IOException, SQLException{
 		Button b=(Button) E.getSource();
 		Stage stage=(Stage)b.getScene().getWindow();
-		stage.close();
-		restart();
+		stage.close();	
+		
+		
+        try {
+    		FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
+    		loader.setController(new HomeController());
+    		Parent root = loader.load();
+    		HomeController controller = loader.getController();
+    		controller.start(FinVision.getPrimaryStage());
+			FinVision.getPrimaryScene().setRoot(root);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -588,7 +539,8 @@ public class HomeController {
 
 				 	}
 
-				 REXP rLink;
+				 @SuppressWarnings("unused")
+				REXP rLink;
 				 rLink = re.eval("source(\"FinVision.R\")");
 				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + ")");
 
@@ -644,10 +596,11 @@ public class HomeController {
 	//Start
 	/**
 	 * @param primaryStage
-	 * Start method for home menu
-	 * @throws SQLException 
+	 * @throws SQLException
+	 * @throws IOException
+	 * Start method for home menu 
 	 */
-	public void start(Stage primaryStage) throws SQLException {
+	public void start(Stage primaryStage) throws SQLException, IOException {
 		//Fix SplitPane Divider in middle position
 		Split.setDividerPositions(0.50);
 		PortfolioList.maxWidthProperty().bind(Split.widthProperty().multiply(.50));
@@ -660,20 +613,33 @@ public class HomeController {
 		ObservableList<String> names=FXCollections.observableArrayList(portfolioNames);
 		PortfolioList.setItems(names);
 		
-		
+
 		//Create custom ListView Cells for each Portfolio
 		PortfolioList.setCellFactory(new Callback<ListView<String>, 
 	            ListCell<String>>() {
             @Override 
             public ListCell<String> call(ListView<String> PortfolioList) {
-            	
-                return new CustomCell();
+            ListCell<String>  Cell = new CustomCell();
+            return Cell;
                 
             }
         }
     );
 	
 		
+	}
+	
+	public void refreshList() throws IOException{
+		List<String> portfolioNames=new ArrayList<String>();
+		DBOperations Ops=new DBOperations();
+		try {
+			portfolioNames=Ops.retrieveNames();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ObservableList<String> names=FXCollections.observableArrayList(portfolioNames);
+		PortfolioList.setItems(names);
 	}
 
 }

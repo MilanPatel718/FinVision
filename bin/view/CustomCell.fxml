@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="container" maxHeight="271.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="39.0" prefWidth="320.0" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="container" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="39.0" prefWidth="360.0" styleClass="customCell" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="PName" prefHeight="39.0" prefWidth="113.0" styleClass="listText" text="Label" textFill="#fffbfb">
+      <Label fx:id="PName" contentDisplay="CENTER" prefHeight="39.0" prefWidth="152.0" styleClass="listText" text="Label" textFill="#fffbfb">
          <font>
             <Font name="Comic Sans MS Bold Italic" size="22.0" />
-         </font></Label>
-      <Button fx:id="Edit" mnemonicParsing="false" onAction="#editPortfolio" prefHeight="39.0" prefWidth="108.0" text="Edit">
-         <HBox.margin>
-            <Insets left="35.0" />
-         </HBox.margin></Button>
-      <Button fx:id="Delete" mnemonicParsing="false" onAction="#deletePortfolio" prefHeight="39.0" prefWidth="105.0" text="Delete">
-         <HBox.margin>
-            <Insets left="10.0" />
-         </HBox.margin></Button>
+         </font>
+      </Label>
+      <Button fx:id="Edit" mnemonicParsing="false" onAction="#editPortfolio" prefHeight="39.0" prefWidth="119.0" text="Edit" visible="false" />
+      <Button fx:id="Delete" mnemonicParsing="false" onAction="#deletePortfolio" prefHeight="39.0" prefWidth="113.0" text="Delete" visible="false" />
    </children>
 </HBox>

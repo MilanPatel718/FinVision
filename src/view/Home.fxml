@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="400.0" minWidth="400.0" prefHeight="500.0" prefWidth="500.0" styleClass="background" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox minHeight="400.0" minWidth="400.0" prefHeight="500.0" prefWidth="500.0" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane fx:id="Split" dividerPositions="0.5" prefHeight="398.0" prefWidth="460.0" VBox.vgrow="ALWAYS">
         <items>
-            <ListView fx:id="PortfolioList" prefHeight="200.0" prefWidth="200.0" styleClass="list" />
+            <ListView fx:id="PortfolioList" prefHeight="200.0" prefWidth="200.0" />
             <GridPane fx:id="Grid">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
