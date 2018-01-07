@@ -29,10 +29,14 @@ public class FinVision extends Application {
 		HomeController homeController= loader.getController();
 		setPrimaryStage(primaryStage);
 		primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
-
 		//Set preferred dimensions for application home
 		homeController.start(primaryStage);
 		Scene scene=new Scene(root, 800, 600);
+		
+		String css = getClass().getResource("/view/dark.css").toExternalForm();
+		scene.getStylesheets().clear();
+		scene.getStylesheets().add(css);
+		
 		setPrimaryScene(scene);
 		primaryStage.setMinHeight(700);
 		primaryStage.setMinWidth(830);

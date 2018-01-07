@@ -191,6 +191,11 @@ public class HomeController {
 			HBox comp=(HBox) loader.load();
 			stockList=(ListView<String>) comp.getChildren().get(0);
 			Scene stageScene = new Scene(comp, 600, 400);
+			
+			String css = getClass().getResource("/view/dark.css").toExternalForm();
+			stageScene.getStylesheets().clear();
+			stageScene.getStylesheets().add(css);
+			
 			createStage.setMinHeight(430);
 			createStage.setMinWidth(600);
 			createStage.setScene(stageScene);
@@ -278,6 +283,11 @@ public class HomeController {
 		loader.setController(new HomeController());
 		VBox comp=(VBox) loader.load();
 		Scene stageScene = new Scene(comp, 600, 217);
+		
+		String css = getClass().getResource("/view/dark.css").toExternalForm();
+		stageScene.getStylesheets().clear();
+		stageScene.getStylesheets().add(css);
+		
 		createStage.setMinHeight(300);
 		createStage.setMinWidth(600);
 		createStage.setScene(stageScene);
@@ -559,38 +569,6 @@ public class HomeController {
 			}
 	}
 		
-		
-	/**
-	 * @throws IOException
-	 * Restarts Home View and updates list of portfolios
-	 */
-	public void restart() throws IOException{
-		FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
-		loader.setController(new HomeController());
-		VBox root = null;
-		try {
-			root = (VBox)loader.load();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		HomeController homeController= loader.getController();
-		Stage primaryStage = FinVision.getPrimaryStage();
-		primaryStage.close();
-		
-		try {
-			homeController.start(primaryStage);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Scene scene=new Scene(root, 800, 600);
-		primaryStage.setMinHeight(700);
-		primaryStage.setMinWidth(830);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("FinVision");
-		primaryStage.show();	
-	}
 	
 	
 	//Start

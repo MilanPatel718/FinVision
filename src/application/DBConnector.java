@@ -1,8 +1,9 @@
 package application;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
 
 
@@ -33,7 +34,9 @@ public class DBConnector {
 	   private Connection createConnection() throws IOException{
 		   Connection connection=null;
 		   try {
-			BufferedReader br=new BufferedReader(new FileReader("Credentials.txt"));
+			InputStream is = getClass().getResourceAsStream("Credentials.txt");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br=new BufferedReader(isr);
 			try {
 				url=br.readLine();
 			} catch (IOException e) {
