@@ -521,8 +521,6 @@ public class HomeController {
 				
 			 // Recommended, though not needed as such.
 			 if (!Rengine.versionCheck()) {System.exit(0);}
-			 
-			System.out.println(re.eval("5"));
 			 List<String> stockNames=new ArrayList<String>();
 					
 			 //Connect to database
@@ -555,17 +553,6 @@ public class HomeController {
 				 String sourceCommand = "source(" + sourceFile + ")";
 				 rLink = re.eval(sourceCommand);
 				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + ")");
-
-
-				 System.out.println(re.eval("Apple"));
-				 
-				 /* re.eval("stocks <- as.xts(data.frame(" + combinePlot + "))");
-				 System.out.println("stocks <- as.xts(data.frame(" + combinePlot + "))");
-				 re.eval("stock_return = apply(stocks, 1, function(x) { x / stocks[1,]})"
-						+ "%>% t %>% as.xts");
-				 re.eval("plot(as.zoo(stock_return), screens=1, lty = 1:3, "
-						+ "xlab = \"Date\", ylab = \"Return\")");
-				 re.eval("legend(\"topleft\", " + vector +", lty = 1:3, cex=0.5"); */
 				
 			}
 	}
