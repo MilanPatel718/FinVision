@@ -450,7 +450,7 @@ public class HomeController {
 			
 		}
 		else{
-			
+		    
 			Dialog<Pair<String, String>> dialog = new Dialog<>();
 			dialog.setTitle("Date Specification");
 			dialog.setHeaderText("Input start and end date range (Ensure start date is before end date!)");
@@ -522,7 +522,7 @@ public class HomeController {
 			 // Recommended, though not needed as such.
 			 if (!Rengine.versionCheck()) {System.exit(0);}
 			 
-			
+			System.out.println(re.eval("5"));
 			 List<String> stockNames=new ArrayList<String>();
 					
 			 //Connect to database
@@ -550,13 +550,14 @@ public class HomeController {
 				 	}
 
 				 @SuppressWarnings("unused")
-				REXP rLink;
-				 rLink = re.eval("source(\"FinVision.R\")");
+				 REXP rLink;
+				 String sourceFile ="\"" + re.eval("getwd()").asString() + "/FinVision.R" +"\"";
+				 String sourceCommand = "source(" + sourceFile + ")";
+				 rLink = re.eval(sourceCommand);
 				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + ")");
 
 
 				 System.out.println(re.eval("Apple"));
-
 				 
 				 /* re.eval("stocks <- as.xts(data.frame(" + combinePlot + "))");
 				 System.out.println("stocks <- as.xts(data.frame(" + combinePlot + "))");

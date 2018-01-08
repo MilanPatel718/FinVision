@@ -5,5 +5,8 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JRI_DIR"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/mysql-connector-java-5.1.43-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/milan/OneDrive/Documents/R/win-library/3.4/rJava/jri/JRI.jar"/>
+	<classpathentry kind="lib" path="C:/Users/milan/OneDrive/Documents/R/win-library/3.4/rJava/jri/JRIEngine.jar"/>
+	<classpathentry kind="lib" path="C:/Users/milan/OneDrive/Documents/R/win-library/3.4/rJava/jri/REngine.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

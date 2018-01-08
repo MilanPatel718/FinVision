@@ -1,16 +1,11 @@
 singlePortfolio <- function(TickerList, Size, start, end){ 
   
-  if (!require("rJava")) {
-    install.packages("rJava")
-    library(quantmod)
-  }
-  
-  if (!require("quantmod")) {
-    install.packages("quantmod")
-    library(quantmod)
-  }
+  library(rJava)
+  library(quantmod)
+  library(magrittr)
   .jinit()
   .jengine(TRUE)
+
   TickerList <- as.vector(TickerList)
   Size <- as.integer(Size)
   start <- as.Date(start)
@@ -50,7 +45,7 @@ singlePortfolio <- function(TickerList, Size, start, end){
   dev.new()
   do.call(grid.arrange, c(gg_list, ncol=nCol))
   
-  
+  return(AAPL)
   
 }
 
