@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import application.DBOperations;
@@ -21,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -67,6 +70,7 @@ public class HomeController {
 	
 	public String start;
 	public String end;
+	public int movingAverage;
 	
 	
 	//Inner class for custom ListView Cell
@@ -453,7 +457,8 @@ public class HomeController {
 		    
 			Dialog<Pair<String, String>> dialog = new Dialog<>();
 			dialog.setTitle("Date Specification");
-			dialog.setHeaderText("Input start and end date range (Ensure start date is before end date!)");
+			dialog.setHeaderText("Input start/end date: \n 1) Ensure start date is before end date \n 2) Select Moving Average value to plot (Select 0 for no MA) \n 3) "
+					+ "Number of weekdays between start and end must be atleast equal to selected n value");
 			
 			start=null;
 			end=null;
@@ -468,27 +473,45 @@ public class HomeController {
 			DatePicker startDate = new DatePicker();
 			DatePicker endDate = new DatePicker();
 			
+			ObservableList<Integer> options = FXCollections.observableArrayList(0, 10, 15, 30, 50, 100, 200);
+			final ComboBox<Integer> comboBox = new ComboBox<Integer>(options);
+			
 			grid.add(new Label("Start Date:"), 0, 0);
 			grid.add(startDate, 1, 0);
 			grid.add(new Label("End Date:"), 0, 1);
 			grid.add(endDate, 1, 1);
+			grid.add(new Label("Moving Average n value: "), 2, 0);
+			grid.add(comboBox, 3, 0);
 			
 			dialog.getDialogPane().setContent(grid);
+			
 			
 
 			dialog.setResultConverter(dialogButton -> {
 			    if (dialogButton == dateButton) {
-			    	if(startDate.getValue()==null || endDate.getValue()==null){
+			    	if(startDate.getValue()==null || endDate.getValue()==null || comboBox.getValue()==null){
 			    		Alert alert = new Alert(AlertType.ERROR);
 			    		alert.setTitle("Error Dialog");
 			    		alert.setHeaderText("Incorrect Entry");
 			    		alert.setContentText("Please make sure fields aren't blank");
-			    		
 			    		alert.showAndWait();
-			    		return null;
+			    		dialog.showAndWait();
 			    		
 			    	}
 			    	if(startDate.getValue().compareTo(endDate.getValue()) < 0){
+			    		java.util.Date sDate = java.sql.Date.valueOf(startDate.getValue());
+			    		java.util.Date eDate = java.sql.Date.valueOf(endDate.getValue());
+			    		int tradingDays = HomeController.getTradingDays(sDate,eDate);
+			    		if(tradingDays < comboBox.getValue()){
+				    		Alert alert = new Alert(AlertType.ERROR);
+				    		alert.setTitle("Error Dialog");
+				    		alert.setHeaderText("Incorrect Entry");
+				    		alert.setContentText("Number of observations must be at least equal to selected moving average value n");
+				    		alert.showAndWait();
+				    		dialog.showAndWait();
+			    			
+			    		}
+			    		movingAverage = comboBox.getValue();
 			    		DateTimeFormatter s = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			    		start = startDate.getValue().format(s);
 			    		end = endDate.getValue().format(s);
@@ -552,7 +575,7 @@ public class HomeController {
 				 String sourceFile ="\"" + re.eval("getwd()").asString() + "/FinVision.R" +"\"";
 				 String sourceCommand = "source(" + sourceFile + ")";
 				 rLink = re.eval(sourceCommand);
-				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + ")");
+				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + "," + movingAverage + ")");
 				
 			}
 	}
@@ -595,17 +618,23 @@ public class HomeController {
 		
 	}
 	
-	public void refreshList() throws IOException{
-		List<String> portfolioNames=new ArrayList<String>();
-		DBOperations Ops=new DBOperations();
-		try {
-			portfolioNames=Ops.retrieveNames();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ObservableList<String> names=FXCollections.observableArrayList(portfolioNames);
-		PortfolioList.setItems(names);
-	}
+	public static int getTradingDays(Date startDate, Date endDate) {
+	    Calendar startCal = Calendar.getInstance();
+	    startCal.setTime(startDate);        
+
+	    Calendar endCal = Calendar.getInstance();
+	    endCal.setTime(endDate);
+
+	    int workDays = 0;
+
+	    while (startCal.getTimeInMillis() <= endCal.getTimeInMillis()){
+	        if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+	 	        ++workDays;
+	 	     }
+	        	 startCal.add(Calendar.DAY_OF_MONTH, 1);
+	        }
+	    return workDays;
+	    	
+	    }
 
 }
