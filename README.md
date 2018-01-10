@@ -4,7 +4,7 @@ Financial Modeling GUI project that aims to use Java FX, R, and MySQL. The goal 
 Download the project and follow the configuration steps as stated below:
 
 Configuration:
-This project connects Java and R using rJava/JRI. Development tools used: Windows, Java, Eclipse IDE, MySQL, R/RStudio. Download these tools in order to run project properly.
+This project connects Java and R using rJava/JRI. Development tools used: Windows, Java, Eclipse IDE, MySQL, R/RStudio. Download/Use these tools in order to run project properly.
 
 rJava must first be downloaded using the R workbench. This project uses 64-bit installations. On the R workbench use the following command to install the rJava package:
 install.packages("rJava") 
@@ -26,6 +26,7 @@ YOUR PASSWORD FOR ABOVE DATABASE
 *Take note of the newline characters and translate accordingly for the Credentials file (there should be 3 lines total in the file). 
 
 Once this is all done you can run the project on Eclipse or export the project as an executable JAR
+Whenver visualization is done, R will create an empty Rtmp folder in the project's working directory. They are empty so space is miniscule but be sure to delete them periodically
 *A few points about running the JAR:
 1) Ensure that FinVision.R , the R script run from the application, is in the same directory as the installed JAR file
 2) The initial run of the application may ask you to select a mirror to install appropriate R packages

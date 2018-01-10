@@ -47,7 +47,7 @@ singlePortfolio <- function(TickerList, Size, start, end, movingAverage){
     }
     
     #Parse i from loop to get appropriate variables
-    x <- paste(deparse(as.name(i)), ".Close", sep="")
+    x <- paste(deparse(as.name(i)), ".Adjusted", sep="")
     y <- deparse(as.name(i))
     z <- eval(as.name(y))
 
@@ -58,10 +58,10 @@ singlePortfolio <- function(TickerList, Size, start, end, movingAverage){
        chartSeries(z, dn.col = "red", name = y, TA="addVo()")
      }
      else{
-       tmp <- paste(movingAverage, ")", sep="")
-       taParam <- paste("addVo();addEMA(", tmp, sep = "" )
+       maTmp <- paste(movingAverage, ");", sep="")
+       bbTmp <- paste("n =", movingAverage, sep="")
+       taParam <- paste(paste("addVo();addEMA(", maTmp, sep = "" ), paste(paste("addBBands(", bbTmp, sep ="" ), ")", sep=""))
        chartSeries(z, dn.col = "red", name = y, TA=taParam)
-    
      }
    
      #candleChart(z, up.col= "green", dn.col = "red", theme = "black",  name = y )
