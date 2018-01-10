@@ -68,15 +68,16 @@ public class HomeController {
 	@FXML Pane TopPane;
 	@FXML Pane BottomPane;
 	
+	//Global declarations
 	public String start;
 	public String end;
 	public int movingAverage;
 	
 	
-	//Inner class for custom ListView Cell
 	/**
 	 * @author milan
-	 *Allows callback for ListView Cell Factory
+	 * Inner class for custom ListView Cell
+	 * Allows callback for ListView Cell Factory
 	 */
 	public class CustomCell extends ListCell<String>{
 		@FXML private Label PName;
@@ -91,7 +92,10 @@ public class HomeController {
 		@FXML Button Rename;
 		@FXML Button FinishEdit;
 		
+		//Constructor for custom ListView cell
 		public CustomCell(){
+			
+			//Load custom list cell fxml
 			FXMLLoader mLoader = new FXMLLoader(getClass().getResource("/view/CustomCell.fxml"));
 			mLoader.setController(this);
             try {
@@ -100,6 +104,7 @@ public class HomeController {
                 e.printStackTrace();
             }
             
+            //Set on click method for each cell
             setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
@@ -109,6 +114,8 @@ public class HomeController {
                     
                 }
             }); 
+            
+            //Set on click listener for selection change
             PortfolioList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection)->{
             	Edit.setVisible(false);
             	Delete.setVisible(false);
@@ -134,8 +141,8 @@ public class HomeController {
 		/**
 		 * @param E
 		 * @throws IOException
-		 * Prompts confirmation for portfolio deletion, makes delete command to DB if confirmed
-		 * @throws SQLException 
+		 * @throws SQLException
+		 * Prompts confirmation for portfolio deletion, makes delete command to DB if confirmed 
 		 */
 		@FXML
 		private void deletePortfolio(ActionEvent E) throws IOException, SQLException{
@@ -166,8 +173,7 @@ public class HomeController {
 					}
 				}
 				//Handle if unsuccessful delete
-				else{
-				}
+				else{}
 				
 			}
 			else{}
@@ -196,10 +202,12 @@ public class HomeController {
 			stockList=(ListView<String>) comp.getChildren().get(0);
 			Scene stageScene = new Scene(comp, 600, 400);
 			
+			//Load external css document
 			String css = getClass().getResource("/view/dark.css").toExternalForm();
 			stageScene.getStylesheets().clear();
 			stageScene.getStylesheets().add(css);
 			
+			//Set preferred dimensions
 			createStage.setMinHeight(430);
 			createStage.setMinWidth(600);
 			createStage.setScene(stageScene);
@@ -228,34 +236,35 @@ public class HomeController {
 
 			        if (click.getClickCount() == 2) {
 			           //Use ListView's getSelected Item
-			           String currentItemSelected = stockList.getSelectionModel()
-			                                                    .getSelectedItem();
+			           String currentItemSelected = stockList.getSelectionModel().getSelectedItem();
 			           int currIndex=stockList.getSelectionModel().getSelectedIndex();
 			           if(currentItemSelected==null){}
 			           else{
-			        	Alert alert = new Alert(AlertType.CONFIRMATION);
-			   			alert.setTitle("Confirmation Dialog");
-			   			alert.setHeaderText(currentItemSelected+ " will be deleted.");
-			   			alert.setContentText("Are you sure you want to delete this stock?");
-			   			Optional<ButtonType> result = alert.showAndWait();
+			        	    Alert alert = new Alert(AlertType.CONFIRMATION);
+			   				alert.setTitle("Confirmation Dialog");
+			   				alert.setHeaderText(currentItemSelected+ " will be deleted.");
+			   				alert.setContentText("Are you sure you want to delete this stock?");
+			   				Optional<ButtonType> result = alert.showAndWait();
 			   			
-			   			if(result.get()==ButtonType.OK){
-			   				String [] split=currentItemSelected.split(" ");
-			   				String Ticker=split[0];
+			   				if(result.get()==ButtonType.OK){
+			   					String [] split=currentItemSelected.split(" ");
+			   					String Ticker=split[0];
 			   				
-			   				DBOperations ops=new DBOperations();
-			   				try {
-								boolean check=ops.deleteStock(editPortfolio, Ticker);
-								if(check){
-									stockList.getItems().remove(currIndex);
-									stockList.refresh();
-								}
-							} catch (SQLException e) {
+			   					DBOperations ops=new DBOperations();
+			   					try {
+			   						boolean check=ops.deleteStock(editPortfolio, Ticker);
+			   						if(check){
+			   							stockList.getItems().remove(currIndex);
+			   							stockList.refresh();
+			   						}
+			   						} 
+			   					catch (SQLException e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (IOException e) {
+			   						e.printStackTrace();
+			   						} 
+			   					catch (IOException e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
+			   						e.printStackTrace();
 							}
 			   			
 			   			}
@@ -288,10 +297,12 @@ public class HomeController {
 		VBox comp=(VBox) loader.load();
 		Scene stageScene = new Scene(comp, 600, 217);
 		
+		//Load external css document
 		String css = getClass().getResource("/view/dark.css").toExternalForm();
 		stageScene.getStylesheets().clear();
 		stageScene.getStylesheets().add(css);
 		
+		//Set preferred dimensions
 		createStage.setMinHeight(300);
 		createStage.setMinWidth(600);
 		createStage.setScene(stageScene);
@@ -307,9 +318,9 @@ public class HomeController {
 	/**
 	 * @param E
 	 * @throws IOException
+	 * @throws SQLException
 	 * On click method for creating portfolio and corresponding table in database
-	 * Checks uniqueness before allowing table creation
-	 * @throws SQLException 
+	 * Checks uniqueness before allowing table creation 
 	 */
 	@FXML
 	private void submitPortfolioName(ActionEvent E) throws IOException, SQLException{
@@ -415,7 +426,7 @@ public class HomeController {
 		Stage stage=(Stage)b.getScene().getWindow();
 		stage.close();	
 		
-		
+		//Reload home stage
         try {
     		FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
     		loader.setController(new HomeController());
@@ -438,6 +449,7 @@ public class HomeController {
 	 */
 	@FXML 
 	private void visualizeData(ActionEvent E) throws IOException, SQLException{
+		//Check if selected portfolio is empty
 		if(PortfolioList.getItems().isEmpty()){
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Error Dialog");
@@ -445,6 +457,7 @@ public class HomeController {
 			alert.setContentText("Portfolio List is Empty");
 			alert.showAndWait();
 		}
+		//Check if a portfolio is selected
 		else if(PortfolioList.getSelectionModel().getSelectedItems().isEmpty()){
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Error Dialog");
@@ -453,29 +466,34 @@ public class HomeController {
 			alert.showAndWait();
 			
 		}
+		//Open parameter dialog
 		else{
-		    
+		    //Set up dialog
 			Dialog<Pair<String, String>> dialog = new Dialog<>();
-			dialog.setTitle("Date Specification");
-			dialog.setHeaderText("Input start/end date: \n 1) Ensure start date is before end date \n 2) Select Moving Average value to plot (Select 0 for no MA) \n 3) "
-					+ "Number of weekdays between start and end must be atleast equal to selected n value");
-			
+			dialog.setTitle("Charting Parameters");
+			dialog.setHeaderText("1) Ensure start date is before end date \n2) Select Moving Average value to plot (Select 0 for no MA) \n3) "
+					+ "Number of trading days from Range(Start,End) must be atleast equal to selected n value");
 			start=null;
 			end=null;
 			ButtonType dateButton = new ButtonType("Enter", ButtonData.OK_DONE);
 			dialog.getDialogPane().getButtonTypes().addAll(dateButton, ButtonType.CANCEL);
 			
+			//Create grid to attach to dialog
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
 			grid.setVgap(10);
 			grid.setPadding(new Insets(20, 150, 10, 10));
 			
+			//Create start and end date pickers
 			DatePicker startDate = new DatePicker();
 			DatePicker endDate = new DatePicker();
 			
+			//Create a drop down menu for Moving Average parameter and set default to 0
 			ObservableList<Integer> options = FXCollections.observableArrayList(0, 10, 15, 30, 50, 100, 200);
 			final ComboBox<Integer> comboBox = new ComboBox<Integer>(options);
+			comboBox.setValue(0);
 			
+			//Add components to grid
 			grid.add(new Label("Start Date:"), 0, 0);
 			grid.add(startDate, 1, 0);
 			grid.add(new Label("End Date:"), 0, 1);
@@ -483,13 +501,15 @@ public class HomeController {
 			grid.add(new Label("Moving Average n value: "), 2, 0);
 			grid.add(comboBox, 3, 0);
 			
+			//Add grid to dialog
 			dialog.getDialogPane().setContent(grid);
 			
 			
-
+			//Process input parameters
 			dialog.setResultConverter(dialogButton -> {
 			    if (dialogButton == dateButton) {
-			    	if(startDate.getValue()==null || endDate.getValue()==null || comboBox.getValue()==null){
+			    	//Check if either start or end date is not specified
+			    	if(startDate.getValue()==null || endDate.getValue()==null){
 			    		Alert alert = new Alert(AlertType.ERROR);
 			    		alert.setTitle("Error Dialog");
 			    		alert.setHeaderText("Incorrect Entry");
@@ -498,10 +518,17 @@ public class HomeController {
 			    		dialog.showAndWait();
 			    		
 			    	}
+			    	//Check that start date comes before end date
 			    	if(startDate.getValue().compareTo(endDate.getValue()) < 0){
+			    		
+			    		//Retrieve valid trading days (Mon-Fri) from start date to end date (inclusive)
 			    		java.util.Date sDate = java.sql.Date.valueOf(startDate.getValue());
 			    		java.util.Date eDate = java.sql.Date.valueOf(endDate.getValue());
 			    		int tradingDays = HomeController.getTradingDays(sDate,eDate);
+			    		
+			    		/* Check that there are enough observations (trading days) that trading days >= n, or that moving average for n can be calculated
+			    		 * e.g An erroneous input would be tradingDays = 19 when n = 20, because a moving average on 20 past observations cannot be calculated in this case
+			    		 */
 			    		if(tradingDays < comboBox.getValue()){
 				    		Alert alert = new Alert(AlertType.ERROR);
 				    		alert.setTitle("Error Dialog");
@@ -518,6 +545,7 @@ public class HomeController {
 			    		return new Pair<>(start, end);
 			    		
 			    	}
+			    	//Alert if dates are in incorrect order
 			    	else{
 			    		Alert alert = new Alert(AlertType.ERROR);
 			    		alert.setTitle("Error Dialog");
@@ -536,25 +564,32 @@ public class HomeController {
 				return;
 			}
 			
+			//Retrieve list of stocks from portfolio
 			ObservableList<String> selectedItems =  PortfolioList.getSelectionModel().getSelectedItems();
+			
+			//Initialize R engine for communication between Java and R
 			Rengine re = Rengine.getMainEngine();
+			String wd = null;
 			 if (re==null){
 				re = new Rengine(null, false, null);
+				 wd = re.eval("getwd()").asString();
 			 }
 				
-			 // Recommended, though not needed as such.
+			 //Recommended check
 			 if (!Rengine.versionCheck()) {System.exit(0);}
+			 
 			 List<String> stockNames=new ArrayList<String>();
-					
+			 
 			 //Connect to database
 			 DBOperations Ops=new DBOperations();
 			 stockNames=Ops.retrieveStocks(selectedItems.get(0), true);
-				 
+				
+			 //Set up parameters to send to R function
 			 int Size= stockNames.size();
-
-				 
 			 String combinePlot = "";
 			 String vector = "c(";
+			 
+			 //Loop through list of stocks to create vector of stock names to pass to R
 			 for(int i=0; i<stockNames.size(); i++){
 				 String ticker=stockNames.get(i).toString();
 				 if(i==stockNames.size()-1){
@@ -569,14 +604,19 @@ public class HomeController {
 					 
 
 				 	}
-
 				 @SuppressWarnings("unused")
 				 REXP rLink;
-				 String sourceFile ="\"" + re.eval("getwd()").asString() + "/FinVision.R" +"\"";
+				 
+				 //Create parameter for R source() function to find R script
+				 String sourceFile ="\"" + wd + "/FinVision.R" +"\"";
 				 String sourceCommand = "source(" + sourceFile + ")";
 				 rLink = re.eval(sourceCommand);
-				 rLink = re.eval("Apple <-" + "singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + "," + movingAverage + ")");
-				
+				 
+				 //Run singlePortfolio function in R script retrieved above to plot stocks
+				 rLink = re.eval("singlePortfolio(" + vector + ", " + Size + "," + "\"" + start + "\"" +  "," + "\"" + end + "\"" + "," + movingAverage + ")");
+				 
+				 //Close R engine
+				 re.end();
 			}
 	}
 		
@@ -618,6 +658,12 @@ public class HomeController {
 		
 	}
 	
+	/**
+	 * @param startDate
+	 * @param endDate
+	 * @return int
+	 * Calcualates number of trading days (Mon-Fri) between start and end date (inclusive)
+	 */
 	public static int getTradingDays(Date startDate, Date endDate) {
 	    Calendar startCal = Calendar.getInstance();
 	    startCal.setTime(startDate);        

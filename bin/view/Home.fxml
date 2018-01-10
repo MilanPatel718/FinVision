@@ -28,7 +28,7 @@
                      <font>
                         <Font name="Comic Sans MS Bold" size="24.0" />
                      </font></TextArea>
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="text-area2" text="1. Select any portfolio on the left and click below&#10;2. Specify a start date and an end date&#10;3. Press enter to view Candle Charts for each item and press pg up/pg down to navigate through all plots when done&#10;" wrapText="true" GridPane.rowIndex="1">
+                  <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="text-area2" text="1. Select any portfolio on the left and click below&#10;2. Specify a start date and an end date&#10;3. Press enter to run chartSeries() from R quantmod package for each portfolio item and press pg up/pg down to navigate through all plots when done&#10;" wrapText="true" GridPane.rowIndex="1">
                      <font>
                         <Font name="Comic Sans MS Bold" size="21.0" />
                      </font></TextArea>

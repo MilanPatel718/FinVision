@@ -94,10 +94,13 @@ public class EditController {
 	 */
 	@FXML 
 	private void renamePortfolio(ActionEvent E) throws IOException, SQLException{
+		//Set up parameters
 		Button b=(Button)E.getSource();
 		Stage stage=(Stage)b.getScene().getWindow();
 		String Original=stage.getTitle();
 		String rename=editName.getText();
+		
+		//Check if user inputted blank entry
 		if(rename.isEmpty()){
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Error Dialog");
@@ -106,6 +109,7 @@ public class EditController {
 			alert.showAndWait();
 			
 		}
+		//Check if user inputted the same name as original
 		else if(rename.equals(Original)){
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Error Dialog");
@@ -113,6 +117,7 @@ public class EditController {
 			alert.setContentText("New name is identical to the current name");
 			alert.showAndWait();
 		}
+		//Execute the rename operation
 		else{
 			
 			//Connect to Database
@@ -147,6 +152,7 @@ public class EditController {
 		Stage stage=(Stage)b.getScene().getWindow();
 		stage.close();
 		
+		//Reload the home stage
         try {
     		FXMLLoader loader= new FXMLLoader(getClass().getResource("/view/Home.fxml"));
     		loader.setController(new HomeController());

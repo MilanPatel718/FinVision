@@ -26,5 +26,6 @@ YOUR PASSWORD FOR ABOVE DATABASE
 *Take note of the newline characters and translate accordingly for the Credentials file (there should be 3 lines total in the file). 
 
 Once this is all done you can run the project on Eclipse or export the project as an executable JAR
-
-
+*A few points about running the JAR:
+1) Ensure that FinVision.R , the R script run from the application, is in the same directory as the installed JAR file
+2) The initial run of the application may ask you to select a mirror to install appropriate R packages
